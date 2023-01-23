@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Circulation
+comment0.text=\r\n\ Enumeration\ Circulation\ -\ Sens\ de\ Circulation\ sur\ les\ differents\ voies/branches\ de\ Route\r\n\r\n\ @author\ Anis\ Menaa\ William\ Mesnil\r\n\ @version\ Version\ 6\r\n
+comment1.params=typeA\ typeB\ autoMode
+comment1.target=Circulation[]\ matchCirculation(Circulation,\ Circulation,\ boolean)
+comment1.text=\r\n\ Methode\ matchCirculation\ -\ Renvoi\ le\ couple\ de\ Circulation\ qui\ permet\ connexion\ optimale\ rapport\ a\ celles\ passees\ en\ parametre\r\n\r\n\ @param\ \ typeT\ La\ Connexion\ de\ Tile\r\n\ @param\ \ typeN\ La\ Connexion\ du\ Voisin\r\n\ @param\ \ auto\ \ True\ si\ connexions\ sont\ forcees\r\n\ @return\ \ \ \ \ \ \ Le\ couple\ Connexion\ qui\ correspond\ le\ mieux\r\n
+numComments=2

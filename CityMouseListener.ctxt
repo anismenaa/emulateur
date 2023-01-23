@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=CityMouseListener
+comment0.text=\r\n\ Classe\ CityMouseListener.\r\n\r\n\ @author\ William\ Mesnil\ Anis\ Meena\r\n\ @version\ Version\ 6\r\n
+comment1.params=controler
+comment1.target=CityMouseListener(CityControler)
+comment1.text=\r\n\ Constructeur\ d'objets\ de\ classe\ CityMouseListener\r\n
+comment2.params=e
+comment2.target=void\ mouseClicked(java.awt.event.MouseEvent)
+comment2.text=\r\n\ M\u00E9thode\ mouseClicked\r\n\r\n\ @param\ \ e\ \ \ le\ MouseEvent\r\n\ @return\ \ \ \ \ Affiche\ Tile\r\n
+numComments=3

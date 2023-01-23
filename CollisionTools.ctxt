@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=CollisionTools
+comment0.text=\r\n\ classe\ CollisionTools.\r\n\r\n\ @author\ William\ Mesnil\ Anis\ Menaa\r\n\ @version\ Version\ 6\r\n
+comment1.params=hitboxA\ hitboxB
+comment1.target=boolean\ classicRectToRectCollision(java.awt.Rectangle,\ java.awt.Rectangle)
+comment1.text=\r\n\ Methode\ classicRectToRectCollision\ -\ Calculer\ si\ deux\ Rectangles\ Collisionnent\ selon\ Algo\ classique\r\n\r\n\ @param\ \ boxA\ Le\ Premier\ Rectangle\ representant\ objet\ a\ Tester\r\n\ @param\ \ boxB\ Le\ Second\ Rectangle\ representant\ objet\ a\ Tester\r\n\ @return\ \ \ \ \ \ True\ si\ les\ Rectangles\ Collisionnent\r\n
+comment2.params=hitboxA\ hitboxB
+comment2.target=boolean\ extendedRectToRectCollision(java.awt.Rectangle,\ java.awt.Rectangle)
+comment2.text=\r\n\ Methode\ extendedRectToRectCollision\ -\ Calculer\ si\ deux\ Rectangles\ Collisionnent\ selon\ Algo\ modifie\r\n\r\n\ @param\ \ boxA\ Le\ Premier\ Rectangle\ representant\ objet\ a\ Tester\r\n\ @param\ \ boxB\ Le\ Second\ Rectangle\ representant\ objet\ a\ Tester\r\n\ @return\ \ \ \ \ \ True\ si\ les\ Rectangles\ Collisionnent\r\n
+comment3.params=hitbox\ center\ from
+comment3.target=boolean\ hasReachCenterSideFrom(java.awt.Rectangle,\ java.awt.Rectangle,\ Direction)
+comment3.text=\r\n\ Methode\ hasReachCenterSideFrom\ -\ Calculer\ si\ un\ objet\ represente\ par\ Rectangle\ a\ atteint\ cote\ de\ autre\ Rectangle\ depuis\ son\ cote\ correspondant\ a\ sa\ Direction\r\n\r\n\ @param\ \ box\ \ Le\ Rectangle\ representant\ Objet\ a\ Tester\r\n\ @param\ \ ctr\ \ Le\ Rectangle\ representant\ Objectif\r\n\ @param\ \ dir\ \ La\ Direction\ par\ laquelle\ Objet\ tente\ de\ rejoindre\ la\ Bordure\ de\ Objectif\r\n\ @return\ \ \ \ \ \ True\ si\ les\ Rectangles\ Collisionnent\r\n
+comment4.params=hitbox\ center\ from
+comment4.target=boolean\ isApprochingFrom(java.awt.Rectangle,\ java.awt.Rectangle,\ Direction)
+comment4.text=\r\n\ Methode\ isApprochingFrom\ -\ Calculer\ si\ un\ objet\ represente\ par\ Rectangle\ se\ rapproche\ ou\ eloigne\ Rectangle\ avec\ sa\ Direction\ Actuelle\r\n\r\n\ @param\ \ box\ \ Le\ Rectangle\ representant\ Objet\ a\ Tester\r\n\ @param\ \ ctr\ \ Le\ Rectangle\ representant\ Objectif\r\n\ @param\ \ dir\ \ La\ Direction\ par\ laquelle\ Objet\ se\ Deplace\r\n\ @return\ \ \ \ \ \ True\ si\ les\ Rectangles\ Collisionnent\r\n
+numComments=5

@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=MenuAutoListener
+comment0.text=\r\n\ classe\ MenuAutoListener.\r\n\r\n\ @author\ William\ Mesnil\r\n\ @version\ Version\ 6\r\n
+comment1.params=controler
+comment1.target=MenuAutoListener(CityControler)
+comment1.text=\r\n\ Constructeur\ d'objets\ de\ classe\ MenuAutoListener\r\n
+comment2.params=e
+comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment2.text=\r\n\ Methode\ actionPerformed\ -\ Ecouter\ et\ Aller\ MAJ\ Ville\r\n\r\n\ @param\ \ e\ \ \ ActionEvent\r\n\ @return\ \ \ \ \ void\r\n
+numComments=3

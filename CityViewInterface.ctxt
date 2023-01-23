@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=CityViewInterface
+comment0.text=\r\n\ interface\ CityViewInterface.\r\n\r\n\ @author\ \ Anis\ Menaa\ William\ Mesnil\r\n\ @version\ Version\ 6\r\n
+comment1.params=
+comment1.target=void\ repaint()
+comment1.text=\r\n\ entete\ de\ Methode\ repaint\ -\ Dessiner\ les\ Cases,\ Routes\ et\ Voitures\r\n\r\n\ @return\ \ \ \ \ \ void\r\n
+comment2.params=g
+comment2.target=void\ drawCity(java.awt.Graphics)
+comment2.text=\r\n\ entete\ de\ Methode\ drawCity\ -\ Dessiner\ les\ Cases,\ Routes\ et\ Voitures\r\n\r\n\ @param\ \ g\ \ \ \ Le\ Graphique\r\n\ @return\ \ \ \ \ \ void\r\n
+comment3.params=g
+comment3.target=void\ drawCells(java.awt.Graphics)
+comment3.text=\r\n\ entete\ de\ Methode\ drawCells\ -\ Dessiner\ les\ Cases\r\n\r\n\ @param\ \ g\ \ \ \ Le\ Graphique\r\n\ @return\ \ \ \ \ \ void\r\n
+comment4.params=g
+comment4.target=void\ drawTiles(java.awt.Graphics)
+comment4.text=\r\n\ entete\ de\ Methode\ drawTiles\ -\ Dessiner\ les\ Routes\r\n\r\n\ @param\ \ g\ \ \ \ Le\ Graphique\r\n\ @return\ \ \ \ \ \ void\r\n
+comment5.params=g
+comment5.target=void\ drawVehicles(java.awt.Graphics)
+comment5.text=\r\n\ entete\ de\ Methode\ drawVehicles\ -\ Dessiner\ les\ Vehicules\r\n\r\n\ @param\ \ g\ \ \ \ Le\ Graphique\r\n\ @return\ \ \ \ \ \ void\r\n
+comment6.params=viewMouseListener
+comment6.target=void\ setViewMouseListener(java.awt.event.MouseListener)
+comment6.text=\r\n\ entete\ de\ Methode\ setViewMouseListener\ -\ Ajouter\ Listener\ Clic\ au\ JPanel\r\n\r\n\ @param\ \ al\ \ \ Le\ ActionListener\r\n\ @return\ \ \ \ \ \ void\r\n
+comment7.params=viewMouseListener
+comment7.target=void\ removeViewMouseListener(java.awt.event.MouseListener)
+comment7.text=\r\n\ entete\ de\ Methode\ removeViewMouseListener\ -\ Retirer\ Listener\ Clic\ du\ JPanel\r\n\r\n\ @param\ \ al\ \ Le\ ActionListener\r\n\ @return\ \ \ \ \ void\r\n
+numComments=8

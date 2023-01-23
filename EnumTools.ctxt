@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=EnumTools
+comment0.text=\r\n\ classe\ EnumTools.\r\n\r\n\ @author\ William\ Mesnil\r\n\ @version\ Version\ 6\r\n
+comment1.params=e
+comment1.target=java.lang.String[]\ getNames(java.lang.Class)
+comment1.text=\r\n\ Methode\ getNames\ -\ Recuperer\ Valeurs\ Enum\ forme\ String\r\n\r\n\ @author\ \ \ \ \ \ Bohemian\ on\ StackOverflow\r\n\ @param\ \ e\ \ \ \ La\ Classe\ de\ type\ Enum\r\n\ @return\ \ \ \ \ \ Les\ Valeurs\ de\ e\ sous\ forme\ de\ String\r\n
+numComments=2

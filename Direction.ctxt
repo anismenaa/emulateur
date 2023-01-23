@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Direction
+comment0.text=\r\n\ Enumeration\ Direction\ -\ La\ Direction\ du\ Vehicule\r\n\r\n\ @author\ Anis\ Menaa\r\n\ @version\ Version\ 6\r\n
+comment1.params=x\ y
+comment1.target=Direction(int,\ int)
+comment2.params=
+comment2.target=int\ getX()
+comment3.params=
+comment3.target=int\ getY()
+numComments=4
