@@ -20,7 +20,11 @@ public class App
     //Bouton Save : A FAIRE
     //Bouton Load : A FAIRE
     //Appercu : NE FONCTIONNE PAS
-    //Bug Force Connexion
+    //Bugs Corriges
+    //Erreur Booleen
+    //Erreur dans gestion de Next Position (vehicule collision avec prochaine position et appel de fonction errone)
+    //Erreur dans gestion de Next Direction (vehicule peut demi tour, ce qui est parfois seuls solution pour impasse mais pas reste routes
+    //Forcer demi tour si impasse avec ajout de booleen allowsTurnback dans une Tile
     public final static int TILE_WIDTH = 100;//Taille_X Route
     public final static int TILE_HEIGHT = 100;//Taille_Y Route
     public final static int GRID_WIDTH = 10;//Nombre de colonne dand Ville
@@ -29,7 +33,7 @@ public class App
     public final static int MENU_HEIGHT = Math.max(1000,GRID_HEIGHT*TILE_HEIGHT);;//Taille_Y Menu
     public final static int FRAME_WIDTH = MENU_WIDTH+(GRID_WIDTH*TILE_WIDTH);//Taille_X Frame est Ville avec ajout espace lateral Menu
     public final static int FRAME_HEIGHT = Math.max(MENU_HEIGHT,GRID_HEIGHT*TILE_HEIGHT);//Taille_Y Frame
-    public final static int SIMULATION_SPEED = 1;//Vitesse Simulation en secondes
+    public final static int SIMULATION_SPEED = 2;//Vitesse Simulation en secondes
     //System.out.println();
     /**
      * Main

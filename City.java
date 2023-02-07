@@ -52,7 +52,7 @@ public class City implements CityInterface
     private int generationsCounter; //Nombre de generation de Vehicule
     private int vehicleActionsCounter; //Nombre Action totales des Vehicules
     private boolean active; //Dit si Simulation est Active
-
+    private final boolean debug=true;
     /**
      * Constructeur d'objets de classe City
      */
@@ -95,6 +95,11 @@ public class City implements CityInterface
      */
     public void step(){
         //If ten step without Generation, try SafestGeneration
+        if(debug){
+            System.out.println("----------");
+            System.out.println("Step 1 : Before Generation");
+            System.out.println("----------");
+        }
         if(this.lastGeneration > 10){
             //If success, reset counter
             if(this.safestGenerateVehicle()){
@@ -114,53 +119,166 @@ public class City implements CityInterface
             }
         }
         this.lastGeneration++;
-        
         //For each Car, advance
+        if(debug){
+            System.out.println("----------");
+            System.out.println("Step 2 : Before CarLoop");
+            System.out.println("----------");
+        }
         carLoop:
         for(Car car : vehicleList){
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 3 : Inside CarLoop");
+                System.out.println("Car Info : " + car);
+                System.out.println("----------");
+            }
             //If Car is to be dismissed, continue
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 4 : Before canDrive check");
+                System.out.println("Car canDrive : " + car.canDrive());
+                System.out.println("----------");
+            }
             if(!car.canDrive()){
                 continue carLoop;
             }
             //If Car is waiting, wait this step and continue
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 5 : Before isWaiting check");
+                System.out.println("Car isWaiting : " + car.isWaiting());
+                System.out.println("----------");
+            }
             if(car.isWaiting()){
                 car.doWait();
                 continue carLoop;
             }
-            //If currentTile is null, car is out of the Used Grid and flaged as ready to be removed
+            //If currentTile is null, Car is out of the Used Grid and flaged as ready to be removed
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 6 : Before first inBounds check");
+                System.out.println("Car inBounds : " + this.inBounds(car.getGridX(),car.getGridY()));
+                System.out.println("----------");
+            }
+            if(!this.inBounds(car.getGridX(),car.getGridY())){
+                car.stop();
+                continue carLoop;
+            }
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 7 : Before first affected tile check");
+                System.out.println("Tile affected : " + this.cityGrid[car.getGridX()][car.getGridY()]!=null);
+                System.out.println("----------");
+            }
             if(this.cityGrid[car.getGridX()][car.getGridY()]==null){
                 car.stop();
                 continue carLoop;
             }
-            //If Simulation has too many cars, reduce computing charge using closeTo
-            Car next = new Car(car);
-            next.move();
-            List<Car> closeTo = this.closeTo(next);
+            //If Simulation has too many Cars, reduce computing charge using closeTo
+            car.move();
+            List<Car> closeTo = this.closeTo(car);
             //Test Collision for Close Car
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 8 : Before Car collision check");
+                System.out.println("Car X : " + car.getCarX() + ", Car Y : " + car.getCarY());
+                //System.out.println("Next Car X : " + next.getCarX() + ", Next Car Y : " + next.getCarY());
+                System.out.println("----------");
+            }
             for(Car otherCar : closeTo){
                 //If Collision, slightly reverse to let potential Collider manever and wait for 1 step
-                if(this.isColliding(next,otherCar)){
+                if(this.isColliding(car,otherCar)){
+                    if(debug){
+                        System.out.println("----------");
+                        System.out.println("Collision Detected");
+                        System.out.println("Car Colliding : " + otherCar);
+                        System.out.println("----------");
+                    }
                     car.moveReverse();
                     car.waitFor(1);
                     continue carLoop;
                 }
             }
             car.move();
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 9 : Before Compute Grid Position");
+                System.out.println("Car X : " + car.getCarX() + ", Car Y : " + car.getCarY());
+                System.out.println("Car Grid X : " + car.getGridX() + ", Car Grid Y : " + car.getGridY());
+                System.out.println("----------");
+            }
             this.computeVehicleGridPosition(car);
-            //If Car has reach Center, turn in new Direction
+            //Retest after move
+            //If currentTile is null, Car is out of the Used Grid and flagged as ready to be removed
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 10 : Before second inBounds check");
+                System.out.println("Car inBounds : " + this.inBounds(car.getGridX(),car.getGridY()));
+                System.out.println("----------");
+            }
+            if(!this.inBounds(car.getGridX(),car.getGridY())){
+                car.stop();
+                continue carLoop;
+            }
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 11 : Before second affected tile check");
+                System.out.println("Tile affected : " + this.cityGrid[car.getGridX()][car.getGridY()]!=null);
+                System.out.println("----------");
+            }
+            if(this.cityGrid[car.getGridX()][car.getGridY()]==null){
+                car.stop();
+                continue carLoop;
+            }
             RoadTile currentTile = this.cityGrid[car.getGridX()][car.getGridY()];
             //If Car into Valid Tile in Invalid Position
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 12 : Before isValidPosition check");
+                System.out.println("Car Valid : " + this.isValidPosition(car,currentTile));
+                System.out.println("----------");
+            }
             if(!this.isValidPosition(car,currentTile)){
                 car.stop();
                 continue carLoop;
             }
             Rectangle center = this.getTileCenter(currentTile);
+            //Check if Car ready To Turn
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 13 : Before isReadyToTurn check");
+                System.out.println("Car Ready : " + car.isReadyToTurn());
+                System.out.println("----------");
+            }
+            if(!car.isReadyToTurn()){
+                continue carLoop;
+            }
+            //If Car has reach Center, turn in new Direction
+            if(debug){
+                System.out.println("----------");
+                System.out.println("Step 14 : Before hasReachedCenter check");
+                System.out.println("Car Valid : " + this.isValidPosition(car,currentTile));
+                System.out.println("----------");
+            }
             if(CollisionTools.hasReachCenterSideFrom(car.getCarHitbox(),center,car.getDirection())){
                 //If no Direction Avaliable, car reached end of road
+                if(debug){
+                    System.out.println("----------");
+                    System.out.println("Step 15 : Before Compute nextDirection");
+                    System.out.println("Car Direction : " + car.getDirection());
+                    System.out.println("----------");
+                }
                 if(!this.nextDirection(car)){
                     continue carLoop;
                 }
                 //Set Car at Center Exit in correct Position
+                if(debug){
+                    System.out.println("----------");
+                    System.out.println("Step 16 : Before setPosition");
+                    System.out.println("Car Direction : " + car.getDirection());
+                    System.out.println("----------");
+                }
                 int newCarX;
                 int newCarY;
                 //Car go Left, set to Center Left
@@ -198,6 +316,30 @@ public class City implements CityInterface
         this.stepCounter++;
         //Print Stats
         //Check if Zero
+        this.printVehiclesInfo();
+        this.printSimulationInfo();
+    }
+    /**
+     * Methode printVehiclesInfo - Afficher Infos sur Vehicules
+     *
+     * @return      void
+     */
+    public void printVehiclesInfo(){
+        System.out.println("Infos Vehicules");
+        for(Car car : vehicleList){
+            System.out.println("Vehicule : "+car);
+            System.out.println("Position : "+car.getCarLeftRear());
+            System.out.println("Direction : "+car.getDirection());
+            System.out.println("Actions : "+car.getActionCounter());
+        }
+    }
+    /**
+     * Methode printSimulationInfo - Afficher Infos sur Simulation
+     *
+     * @return      void
+     */
+    public void printSimulationInfo(){
+        System.out.println("Infos Vehicules");
         int avgGenerations = 0;
         int avgActions = 0;
         if(this.generationsCounter > 0){
@@ -206,8 +348,25 @@ public class City implements CityInterface
         if(this.vehicleActionsCounter > 0){
             avgActions = this.generationsCounter/this.vehicleActionsCounter;
         }
-        System.out.println("Moyenne Vehicules Generes chaque etape : "+avgGenerations);
+        System.out.println("Etape : "+this.stepCounter);
+        System.out.println("Vehicules Generes : "+this.generationsCounter);
+        System.out.println("Derniere Generation : "+this.lastGeneration);
+        System.out.println("Vehicules Generes en Moyenne toutes les : "+avgGenerations+" etapes");
         System.out.println("Moyenne Actions des Vehicules : "+avgActions);
+    }
+    /**
+     * Methode inBounds - Dit si Position dans Limite de Grille
+     *
+     * @param  posX La Position X
+     * @param  posY La Position Y
+     * @return      True si Position est Valide
+     */
+    public boolean inBounds(int posX, int posY){
+        if((posX>=0)&&(posX<=this.GRID_WIDTH)
+        &&(posY>=0)&&(posY<=this.GRID_HEIGHT)){
+            return true;
+        }
+        return false;
     }
     /**
      * Methode isValidPosition - Dit si Vehicule sortie de Route
@@ -218,11 +377,13 @@ public class City implements CityInterface
      */
     public boolean isValidPosition(Car car, RoadTile tile){
         //Test the Opposite of CollisionTools.hasReachCenterFrom()
-        //If Tile move in a given Direction and has no reach center, then it is approachin from said Direction
+        //If Car move in a given Direction and has not reach center, then it is approachin from said Direction
         //Thus Giving us the Lane it is supposed to Drive on
         //Test if car approach Center then use the Direction
-        System.out.println("IN FUNCTION");
+        System.out.println("---TEST---");
         System.out.println(car.getDirection());
+        System.out.println(CollisionTools.hasReachCenterSideFrom(car.getCarHitbox(),this.getTileCenter(tile),car.getDirection()));
+        System.out.println(CollisionTools.isApprochingFrom(car.getCarHitbox(),this.getTileCenter(tile),car.getDirection()));
         if(CollisionTools.isApprochingFrom(car.getCarHitbox(),this.getTileCenter(tile),car.getDirection())){
             if((car.getDirection() == Direction.LEFT)
             &&((tile.getCirculationRight() == Circulation.ONE_WAY_OUT)
@@ -244,29 +405,30 @@ public class City implements CityInterface
             ||(tile.getCirculationUp() == Circulation.TWO_WAY))){
                 return true;
             }
+        }else if(CollisionTools.hasReachCenterSideFrom(car.getCarHitbox(),this.getTileCenter(tile),car.getDirection())){
+            return true;
         }else{
             if((car.getDirection() == Direction.LEFT)
-            &&((tile.getCirculationLeft() == Circulation.ONE_WAY_OUT)
+            &&((tile.getCirculationLeft() == Circulation.ONE_WAY_IN)
             ||(tile.getCirculationLeft() == Circulation.TWO_WAY))){
                 return true;
             }
             else if((car.getDirection() == Direction.UP)
-            &&((tile.getCirculationUp() == Circulation.ONE_WAY_OUT)
+            &&((tile.getCirculationUp() == Circulation.ONE_WAY_IN)
             ||(tile.getCirculationUp() == Circulation.TWO_WAY))){
                 return true;
             }
             else if((car.getDirection() == Direction.RIGHT)
-            &&((tile.getCirculationRight() == Circulation.ONE_WAY_OUT)
+            &&((tile.getCirculationRight() == Circulation.ONE_WAY_IN)
             ||(tile.getCirculationRight() == Circulation.TWO_WAY))){
                 return true;
             }
             else if((car.getDirection() == Direction.DOWN)
-            &&((tile.getCirculationDown() == Circulation.ONE_WAY_OUT)
+            &&((tile.getCirculationDown() == Circulation.ONE_WAY_IN)
             ||(tile.getCirculationDown() == Circulation.TWO_WAY))){
                 return true;
             }
         }
-            
         System.out.println("Véhicule à fini Hors Piste!");
         return false;
     }
@@ -615,7 +777,8 @@ public class City implements CityInterface
             case 0:
             //La bordure gauche
             if(cityGrid[0][tryY] != null){
-                if(cityGrid[0][tryY].getCirculationLeft() != Circulation.NO_WAY){
+                if((cityGrid[0][tryY].getCirculationLeft() == Circulation.ONE_WAY_OUT)
+                ||(cityGrid[0][tryY].getCirculationLeft() == Circulation.TWO_WAY)){
                     Rectangle left = this.getTileLeftIn(cityGrid[0][tryY]);
                     Car car = new Car(0, tryY, (int)left.getX(), (int)left.getY(), vehicleWidth, vehicleHeight, vehicleSpeed, Direction.RIGHT);
                     vehicleList.add(car);
@@ -630,7 +793,8 @@ public class City implements CityInterface
             case 1:
             //La bordure superieure
             if(cityGrid[tryX][0] != null){
-                if(cityGrid[tryX][0].getCirculationUp() != Circulation.NO_WAY){
+                if((cityGrid[tryX][0].getCirculationUp() == Circulation.ONE_WAY_OUT)
+                ||(cityGrid[tryX][0].getCirculationUp() == Circulation.TWO_WAY)){
                     Rectangle up = this.getTileUpIn(cityGrid[tryX][0]);
                     Car car = new Car(tryX, 0, (int)(up.getX()+up.getWidth()), (int)up.getY(), vehicleWidth, vehicleHeight, vehicleSpeed, Direction.DOWN);
                     vehicleList.add(car);
@@ -645,7 +809,8 @@ public class City implements CityInterface
             case 2:
             //La bordure droite
             if(cityGrid[GRID_WIDTH-1][tryY] != null){
-                if(cityGrid[GRID_WIDTH-1][tryY].getCirculationRight() != Circulation.NO_WAY){
+                if((cityGrid[GRID_WIDTH-1][tryY].getCirculationRight() == Circulation.ONE_WAY_OUT)
+                ||(cityGrid[GRID_WIDTH-1][tryY].getCirculationRight() == Circulation.TWO_WAY)){
                     Rectangle right = this.getTileRightIn(cityGrid[GRID_WIDTH-1][tryY]);
                     Car car = new Car(GRID_WIDTH-1, tryY, (int)(right.getX()+right.getWidth()), (int)(right.getY()+right.getHeight()), vehicleWidth, vehicleHeight, vehicleSpeed, Direction.LEFT);
                     vehicleList.add(car);
@@ -660,7 +825,8 @@ public class City implements CityInterface
             case 3:
             //La bordure inferieure
             if(cityGrid[tryX][GRID_HEIGHT-1] != null){
-                if(cityGrid[tryX][GRID_HEIGHT-1].getCirculationDown() != Circulation.NO_WAY){
+                if((cityGrid[tryX][GRID_HEIGHT-1].getCirculationDown() == Circulation.ONE_WAY_OUT)
+                ||(cityGrid[tryX][GRID_HEIGHT-1].getCirculationDown() == Circulation.TWO_WAY)){
                     Rectangle down = this.getTileDownIn(cityGrid[tryX][GRID_HEIGHT-1]);
                     Car car = new Car(tryX, GRID_HEIGHT-1, (int)down.getX(), (int)(down.getY()+down.getHeight()), vehicleWidth, vehicleHeight, vehicleSpeed, Direction.UP);
                     vehicleList.add(car);
@@ -795,15 +961,16 @@ public class City implements CityInterface
         RoadTile tile = cityGrid[car.getGridX()][car.getGridY()];
         List<Direction> nextAvaliable = new ArrayList<Direction>();
         int nextIndex;
+        //Car can go any avaliable direction and if tile allows directly the opposite of current direction
         switch(car.getDirection().name()){
             case "LEFT":
+            if((tile.getCirculationLeft() == Circulation.TWO_WAY)
+            ||(tile.getCirculationLeft() == Circulation.ONE_WAY_IN)){
+                nextAvaliable.add(Direction.LEFT);
+            }
             if((tile.getCirculationUp() == Circulation.TWO_WAY)
             ||(tile.getCirculationUp() == Circulation.ONE_WAY_IN)){
                 nextAvaliable.add(Direction.UP);
-            }
-            if((tile.getCirculationRight() == Circulation.TWO_WAY)
-            ||(tile.getCirculationRight() == Circulation.ONE_WAY_IN)){
-                nextAvaliable.add(Direction.RIGHT);
             }
             if((tile.getCirculationDown() == Circulation.TWO_WAY)
             ||(tile.getCirculationDown() == Circulation.ONE_WAY_IN)){
@@ -816,24 +983,24 @@ public class City implements CityInterface
             ||(tile.getCirculationLeft() == Circulation.ONE_WAY_IN)){
                 nextAvaliable.add(Direction.LEFT);
             }
+            if((tile.getCirculationUp() == Circulation.TWO_WAY)
+            ||(tile.getCirculationUp() == Circulation.ONE_WAY_IN)){
+                nextAvaliable.add(Direction.UP);
+            }
             if((tile.getCirculationRight() == Circulation.TWO_WAY)
             ||(tile.getCirculationRight() == Circulation.ONE_WAY_IN)){
                 nextAvaliable.add(Direction.RIGHT);
             }
-            if((tile.getCirculationDown() == Circulation.TWO_WAY)
-            ||(tile.getCirculationDown() == Circulation.ONE_WAY_IN)){
-                nextAvaliable.add(Direction.DOWN);
-            }
             break;
             
             case "RIGHT":
-            if((tile.getCirculationLeft() == Circulation.TWO_WAY)
-            ||(tile.getCirculationLeft() == Circulation.ONE_WAY_IN)){
-                nextAvaliable.add(Direction.LEFT);
-            }
             if((tile.getCirculationUp() == Circulation.TWO_WAY)
             ||(tile.getCirculationUp() == Circulation.ONE_WAY_IN)){
                 nextAvaliable.add(Direction.UP);
+            }
+            if((tile.getCirculationRight() == Circulation.TWO_WAY)
+            ||(tile.getCirculationRight() == Circulation.ONE_WAY_IN)){
+                nextAvaliable.add(Direction.RIGHT);
             }
             if((tile.getCirculationDown() == Circulation.TWO_WAY)
             ||(tile.getCirculationDown() == Circulation.ONE_WAY_IN)){
@@ -846,13 +1013,13 @@ public class City implements CityInterface
             ||(tile.getCirculationLeft() == Circulation.ONE_WAY_IN)){
                 nextAvaliable.add(Direction.LEFT);
             }
-            if((tile.getCirculationUp() == Circulation.TWO_WAY)
-            ||(tile.getCirculationUp() == Circulation.ONE_WAY_IN)){
-                nextAvaliable.add(Direction.UP);
-            }
             if((tile.getCirculationRight() == Circulation.TWO_WAY)
             ||(tile.getCirculationRight() == Circulation.ONE_WAY_IN)){
                 nextAvaliable.add(Direction.RIGHT);
+            }
+            if((tile.getCirculationDown() == Circulation.TWO_WAY)
+            ||(tile.getCirculationDown() == Circulation.ONE_WAY_IN)){
+                nextAvaliable.add(Direction.DOWN);
             }
             break;
             
@@ -936,6 +1103,7 @@ public class City implements CityInterface
             System.out.println("Voiture pas dans la Grile");
             System.out.println("Voiture ["+car.getCarX()+","+car.getCarY()+"]");
             car.stop();
+            return;
         }
         car.setGridPosition(VEHICLE_TILE_X,VEHICLE_TILE_Y);
     }
@@ -972,7 +1140,8 @@ public class City implements CityInterface
         while(it.hasNext()){
             Car temp = it.next();
             if(car.isEquals(temp)){
-                this.vehicleActionsCounter += temp.getActionCounter();
+                System.out.println("Retrait de Vehicule : "+temp);
+                this.vehicleActionsCounter = this.vehicleActionsCounter + temp.getActionCounter();
                 it.remove();
                 return true;
             }
@@ -991,7 +1160,8 @@ public class City implements CityInterface
         while(it.hasNext()){
             Car temp = it.next();
             if(!temp.canDrive()){
-                this.vehicleActionsCounter += temp.getActionCounter();
+                System.out.println("Retrait de Vehicule Stoppe : "+temp);
+                this.vehicleActionsCounter = this.vehicleActionsCounter + temp.getActionCounter();
                 it.remove();
             }
         }
@@ -1201,7 +1371,8 @@ public class City implements CityInterface
             if(this.cityGrid[0][leftY] == null){
                 continue;
             }
-            if(this.cityGrid[0][leftY].getCirculationLeft() != Circulation.NO_WAY){
+            if((this.cityGrid[0][leftY].getCirculationLeft() == Circulation.ONE_WAY_OUT)
+            ||(this.cityGrid[0][leftY].getCirculationLeft() == Circulation.TWO_WAY)){
                 gridSafestLeftBorder.add(this.cityGrid[0][leftY]);
             }
         }
@@ -1218,7 +1389,8 @@ public class City implements CityInterface
         List<RoadTile> gridSafestSupBorder = new ArrayList<RoadTile>();
         for(int supX=0;supX<this.GRID_WIDTH;supX++){
             if(this.cityGrid[supX][0] != null){
-                if(this.cityGrid[supX][0].getCirculationUp() != Circulation.NO_WAY){
+                if((this.cityGrid[supX][0].getCirculationUp() == Circulation.ONE_WAY_OUT)
+                ||(this.cityGrid[supX][0].getCirculationUp() == Circulation.TWO_WAY)){
                     gridSafestSupBorder.add(this.cityGrid[supX][0]);
                 }
             }
@@ -1237,7 +1409,8 @@ public class City implements CityInterface
         List<RoadTile> gridSafestRightBorder = new ArrayList<RoadTile>();
         for(int rightY=0;rightY<this.GRID_HEIGHT;rightY++){
             if(this.cityGrid[limitX][rightY] != null){
-                if(this.cityGrid[limitX][rightY].getCirculationRight() != Circulation.NO_WAY){
+                if((this.cityGrid[limitX][rightY].getCirculationRight() == Circulation.ONE_WAY_OUT)
+                ||(this.cityGrid[limitX][rightY].getCirculationRight() == Circulation.TWO_WAY)){
                     gridSafestRightBorder.add(this.cityGrid[limitX][rightY]);
                 }
             }
@@ -1256,7 +1429,8 @@ public class City implements CityInterface
         List<RoadTile> gridSafestInfBorder = new ArrayList<RoadTile>();
         for(int infX=0;infX<this.GRID_WIDTH;infX++){
             if(this.cityGrid[infX][limitY] != null){
-                if(this.cityGrid[infX][limitY].getCirculationDown() != Circulation.NO_WAY){
+                if((this.cityGrid[infX][limitY].getCirculationDown() == Circulation.ONE_WAY_OUT)
+                ||(this.cityGrid[infX][limitY].getCirculationDown() == Circulation.TWO_WAY)){
                     gridSafestInfBorder.add(this.cityGrid[infX][limitY]);
                 }
             }

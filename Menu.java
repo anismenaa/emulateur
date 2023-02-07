@@ -70,8 +70,12 @@ public class Menu extends JPanel implements MenuInterface
         this.resetButton = new JButton("Reset");
         //Random Button
         this.randomButton = new JRadioButton("Rand");
+        this.randomButton.setBackground(this.getBackground());
+        this.randomButton.setHorizontalAlignment(JButton.CENTER);
         //Auto Button
         this.autoButton = new JRadioButton("Auto");
+        this.autoButton.setBackground(this.getBackground());
+        this.autoButton.setHorizontalAlignment(JButton.CENTER);
         
         this.random = new Random();
         
@@ -80,6 +84,12 @@ public class Menu extends JPanel implements MenuInterface
         qrPanel.setBackground(this.getBackground());
         qrPanel.add(this.quitButton);
         qrPanel.add(this.resetButton);
+        
+        //Regroup Random and Auto
+        JPanel plusPanel = new JPanel();
+        plusPanel.setBackground(this.getBackground());
+        plusPanel.add(this.randomButton);
+        plusPanel.add(this.autoButton);
         
         //POURQUOI?
         //GridBagConstraints gbc = new GridBagConstraints();
@@ -125,6 +135,7 @@ public class Menu extends JPanel implements MenuInterface
         this.add(upPanel);
         this.add(rightPanel);
         this.add(downPanel);
+        this.add(plusPanel);
         this.setOpaque(true);
     }
     /**
